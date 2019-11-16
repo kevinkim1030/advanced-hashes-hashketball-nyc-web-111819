@@ -57,7 +57,7 @@ def game_hash
         :slam_dunks => 1
     }]},
     :away => {
-      :team_name => "Charlotte Hornet",
+      :team_name => "Charlotte Hornets",
       :colors => ["Turquoise", "Purple"],
       :players => [
        {:player_name => "Jeff Adrien",
@@ -146,8 +146,67 @@ end
 def team_colors(team_name)
   game_hash.each do |place, team|
     if team[:team_name] == team_name
-      binding.pry 
       return team[:colors]
     end
   end
 end
+
+def team_names
+  game_hash.map do |place, team|
+    team[:team_name]
+  end
+end
+
+def player_numbers(team_name)
+  nums = [] 
+  game_hash.each do |place, team|
+    if team[:team_name] == team_name
+      team.each do |attributes, data|
+        if attributes == :players
+          data.each do |player|
+            nums << player[:number]
+          end
+        end
+      end
+    end
+  end
+  nums 
+end
+
+def player_stats(athlete)
+  new_hash = {}
+  game_hash.each do |place, team|
+    team.each do |attributes, data|
+      if attributes == :players
+        data.each do |player|
+          if player[:player_name] == athlete
+            new_hash = player.delete_if do |k, v|
+              k == :player_name 
+            end
+          end
+        end
+      end
+    end
+  end
+  new_hash 
+end
+
+def big_shoe_rebounds
+  biggest_shoe = 0 
+  num_rebounds = 0 
+  
+  game_hash.each do |team, game_data|
+    game_data[:players].each do |player|
+      if player[:shoe] > biggest_shoe
+        biggest_shoe = player[:shoe]
+        num_rebounds = player[:rebounds]
+      end
+    end
+  end
+  num_rebounds
+end
+
+def most_points_scored
+  
+end
+
